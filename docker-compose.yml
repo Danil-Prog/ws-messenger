@@ -25,6 +25,7 @@ services:
       SPRING_RABBITMQ_USER: "admin"
       SPRING_RABBITMQ_PASSWORD: "Mannul84"
       SPRING_RABBITMQ_PORT: 61613
+      app.cors.allowed-origins: http://localhost:3000
     ports:
       - "8080:8080"
     depends_on:
