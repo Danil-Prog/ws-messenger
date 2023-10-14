@@ -5,7 +5,7 @@ services:
   rabbitmq:
     image: pcloud/rabbitmq-stomp
     hostname: rabbit
-    container_name: rabbitmq
+    container_name: rabbitmqs
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: "admin"
@@ -16,12 +16,12 @@ services:
     networks:
       - backend-network
 
-  backend:
-    container_name: backend
+  backend-g:
+    container_name: backend-g
     build: .
     restart: always
     environment:
-      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_HOST: rabbitmqs
       SPRING_RABBITMQ_USER: "admin"
       SPRING_RABBITMQ_PASSWORD: "Mannul84"
       SPRING_RABBITMQ_PORT: 61613
@@ -31,7 +31,6 @@ services:
       - rabbitmq
     links:
       - "rabbitmq"
-      - "mysql_db"
     networks:
       - backend-network
 
