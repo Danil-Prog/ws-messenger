@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+
+  rabbitmq:
+    image: pcloud/rabbitmq-stomp
+    hostname: rabbit
+    container_name: rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "Mannul84"
+    ports:
+      - "15672:15672"
+      - "61613:61613"
+    networks:
+      - backend-network
+
+  backend:
+    container_name: backend
+    build: .
+    restart: always
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USER: "admin"
+      SPRING_RABBITMQ_PASSWORD: "Mannul84"
+      SPRING_RABBITMQ_PORT: 61613
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+    links:
+      - "rabbitmq"
+      - "mysql_db"
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
